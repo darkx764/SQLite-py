@@ -1,48 +1,30 @@
-from classes.databases import databases 
-from classes.menu import menu
+from classes.databases import databases
+from classes.cli_prompter import menu
 import classes.sqlite as conn
 
-# create DB instance
-db = databases()
+menu = menu() # init menu instance
 
-# get list of DB in folder 'databases'
-list_db = db.list('databases')
+def select_db():
+    db = databases() # execute list databases menu
+    s = db.show() # show list of db
+    return s # return selected db
 
-# question to put in choices with list of DB name
-q = {
-        "type": "list",
-        "message":"Choose your db",
-        "choices": list_db
-}
+def main(db):
+    while True:
+        try:
+            sql = conn.SQLiteDB(db) # execute connection on SQLite
+            tables = sql.show() # show list tables
 
-# create menu instance
-menu = menu()
-# execute DB menu
-db_menu = menu.question(q)
+        except Exception as e:
+            print(f"Exception occur in main file : {e}") # print error kalu jadi exception
+            q = menu.confirm("An error occur. EXIT?") # confirmation message
 
-# naming the selected DB path
-sdb = f"databases/{db_menu[0]}"
+            if q[0]:
+                break
 
-# make connection into the DB
-sql = conn.SQLiteDB()
-# connect the selected DB
-sql.connect(sdb)
-
-# question with list of tables name
-qt= {
-    "type": "list",
-    "message": f"Available tables in {db_menu[0]}",
-    "choices": sql.list_tables()
-}
-
-#prompt choices question
-t_menu = menu.question(qt)
-
-#selected table
-print(t_menu[0])
-
-sql.disconnect
-
+""" Execute the main function """  
+sdb = select_db()
+main(sdb)
 
 
 
