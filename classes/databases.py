@@ -2,7 +2,7 @@ import os
 from classes.cli_prompter import menu
 
 class databases:
-    """Databases Manager ."""
+    """ Databases Manager ."""
     def __init__(self):
         pass
 

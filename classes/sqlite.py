@@ -79,12 +79,13 @@ class SQLiteDB:
 
     def __call__(self, method, table):
         """ method to redirect into CRUD """
-        match method:
-            case 'create':
-                self.create(table)
-            case 'read':
-                self.read(table)
-            case 'update':
-                self.update(table)
-            case 'delete':
-                self.delete(table)
+        while True:
+            match method:
+                case 'create':
+                    self.create(table)
+                case 'read':
+                    self.read(table)
+                case 'update':
+                    self.update(table)
+                case 'delete':
+                    self.delete(table)
